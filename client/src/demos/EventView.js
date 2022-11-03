@@ -52,12 +52,9 @@ export default (props) => {
           </div> */}    <div id="eventdedicated">
             <EventDedicated event={event} />
           </div>
-          <div id="incident_edit">
+          <div id="place_order">
             <AddOrders SEID={eventID} />
           </div>
-          {/* <div id="incident_edit">
-            <EventEdit eventOld={event} SEID={eventID} />
-          </div> */}
         </AnimationRevealPage>
         <Footer />
       </>

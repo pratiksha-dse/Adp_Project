@@ -23,7 +23,7 @@ export default function App() {
        
       
         <UserRoute exact path="/restaurants" component={Event} />
-        <UserRoute path="/incident_edit" component={EventView} />
+        <UserRoute path="/place_order" component={EventView} />
         <UserRoute path="/addincidents" component={AddEvent} />
         {/* <UserRoute path="/your_incidents" component={YourEvents} /> */}
 

@@ -287,7 +287,7 @@ export default () => {
              </SecondaryInfoContainer>
                   {/* <Description>{event.description}</Description> */}
                 </TextInfo>
-                <a href={isAdmin?("#/admin_incident?" + event._id):("#/incident_edit?" + event._id)}>
+                <a href={isAdmin?("#/admin_incident?" + event._id):("#/place_order?" + event._id)}>
                 {/* <a href={"#/admin_event_edit?"+event._id}> */}
                     <PrimaryButton>Place an order</PrimaryButton>
                   </a>
