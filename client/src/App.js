@@ -11,6 +11,7 @@ import EventView from "demos/EventView";
 import Event from "demos/Event";
 import Order from "demos/Order";
 import AddEvent from "demos/AddEvent";
+import AllOrders from "demos/AllOrders";
 // import YourEvents from "demos/YourEvents";
 
 
@@ -22,8 +23,9 @@ export default function App() {
        
       
         <UserRoute exact path="/restaurants" component={Event} />
+        <UserRoute exact path="/all_orders" component={AllOrders} />
         <UserRoute path="/place_order" component={EventView} />
-        <UserRoute path="/addincidents" component={AddEvent} />
+        {/* <UserRoute path="/addincidents" component={AddEvent} /> */}
 
         <AdminRoute  path="/orders" component={Order} />
         <Route path="/">

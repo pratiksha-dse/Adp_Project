@@ -11,8 +11,8 @@ import {
 import { SectionDescription } from "components/misc/Typography.js";
 import { Container, ContentWithPaddingXl } from "components/misc/Layouts.js";
 import OrderService from "../../Services/OrderService";
-import EventService from "../../Services/EventService";
 import AgentService from "../../Services/AgentService";
+import EventService from "../../Services/EventService";
 import { ReactComponent as SignUpIcon } from "feather-icons/dist/icons/log-in.svg";
 import { ReactComponent as ChevronDownIcon } from "feather-icons/dist/icons/chevron-down.svg";
 import { ReactComponent as SvgDecoratorBlob1 } from "images/svg-decorator-blob-7.svg";
@@ -67,14 +67,13 @@ const DecoratorBlob2 = styled(SvgDecoratorBlob2)`
   ${tw`pointer-events-none -z-20 absolute left-0 bottom-0 h-64 w-64 opacity-15 transform -translate-x-2/3 text-primary-500`}
 `;
 
-const Orders = ({
+const AddOrders = ({
     subheading = "CapiBull",
     heading = "Orders ",
     description = "Here are some orders.",
-
     primaryButtonText = "Learn More",
     primaryButtonUrl = "https://timerse.com",
-    AID = "",
+    SEID = "",
 }) => {
     const {
         user,
@@ -84,60 +83,74 @@ const Orders = ({
         isAdmin,
         setIsAdmin,
     } = useContext(AuthContext);
+
+    const [message, setMessage] = useState(null);
+    let timerID = useRef(null);
+
+    useEffect(() => {
+        return () => {
+            clearTimeout(timerID);
+        };
+    }, []);
+
+
+    const [details, setDetails] = useState({
+        orders: [],
+        agents: [],
+        events: [],
+    });
+
     const inputRef = useRef();
     useEffect(() => {
         OrderService.getAllOrders().then((data) => {
-            for (const order of data.orders) {
-                if (order.AID === user._id) {
-                    EventService.getEventByID(order.SEID).then((data1) => {
-                        setEvents([...events, data1.event]);
-                        setOrders([...orders, order]);
+            let ags = [];
+            let ords = [];
+            let events = [];
+            for (const ord of data.orders) {
+                AgentService.getAgentByID(ord.AID).then((data1) => {
+                    EventService.getEventByID(ord.SEID).then((data2) => {
+                        ords.push(ord);
+                        ags.push(data1.agent);
+                        events.push(data2.event);
+                        console.log("ags", ags)
+                        console.log("ords", ords)
+                        console.log("events", events)
+                        setDetails({ orders: [...details.orders, ...ords], agents: [...details.agents, ...ags], events: [...details.events, ...events] })
                     });
-
-                }
+                });
             }
         });
+
     }, [inputRef]);
-    const editOrder = (order) => {
-        let newOrder = order;
-        newOrder.status = "Delivered";
-        OrderService.editOrder(newOrder, order._id).then((data) => {
-            const { message } = data;
-            let newAgent = user;
-            newAgent.status = "free";
-            newAgent.sector = order.location;
-            console.log("newAgent", newAgent);
-            AgentService.editAgent(newAgent, user._id).then((data1) => {
-                const { message1 } = data1;
-                if (!message1.msgError) {
-                    setTimeout(() => {
-                    }, 2000);
-                }
-                console.log("agent updated successfully")
-            });
-            if (!message.msgError) {
-                setTimeout(() => {
-                }, 2000);
-            }
-        });
-    }
 
+    console.log("details", details.agents, details.orders,details.events);
+    function removeItemOnce(arr, value) {
+        var index = arr.indexOf(value);
+        if (index > -1) {
+            arr.splice(index, 1);
+        }
+        return arr;
+    }
+    const deleteOrder = (order) => {
+        const tmpOrders = [...details.orders];
+        OrderService.delOrder(order).then((data) => {
+            const { message } = data;
+            setMessage(message);
+        });
+    };
     const [activeQuestionIndex, setActiveQuestionIndex] = useState(null);
 
     const toggleQuestion = (questionIndex) => {
         if (activeQuestionIndex === questionIndex) setActiveQuestionIndex(null);
         else setActiveQuestionIndex(questionIndex);
     };
-    const [orders, setOrders] = useState([]);
-    const [events, setEvents] = useState([]);
-    // console.log("orders", orders)
-    // console.log("events", events)
-    return (
 
+    return (
         // <AnimationRevealPage>
         <Container tw="m-8">
             <ContentWithPaddingXl>
                 <Column>
+
                     <HeaderContent>
                         <br></br>
                         <br></br>
@@ -145,7 +158,7 @@ const Orders = ({
 
                     </HeaderContent>
                     <FAQSContainer>
-                        {orders.map((order, index) => (
+                        {details.orders.map((order, index) => (
                             <FAQ>
                                 <Question
                                     key={index}
@@ -155,8 +168,7 @@ const Orders = ({
                                     className="group"
                                 >
                                     <img src={Logopdf} alt="logo" css={logocss} />
-                                    <QuestionText>Status: {order.status}</QuestionText>
-                                    <QuestionText>Delivery Location: Sector- {order.location}</QuestionText>
+                                    <QuestionText>Status: {order.status}&nbsp; &nbsp; &nbsp;  Ordered Dish: {order.dname}</QuestionText>
                                     <QuestionToggleIcon
                                         variants={{
                                             collapsed: { rotate: 0 },
@@ -197,13 +209,29 @@ const Orders = ({
                                         <br />
                                         Contact Number: {order.no}
                                         <br />
-                                        Dish Name: {order.dname}
-                                        <br />
                                         Quantity of dish: {order.quantity}
                                         <br />
-
+                                        Location: Sector- {order.location}
                                     </p>
                                     <br></br>
+                                    <MyStyledParagraph>Assigned Delivery Agent Details </MyStyledParagraph>
+                                    <br></br>
+                                    <br></br>
+                                    <p
+                                        key={index}
+                                        onClick={() => {
+                                            toggleQuestion(index);
+                                        }}
+                                        className="group"
+                                    >
+                                        Agent Name: {details.agents[index].name}
+                                        <br />
+                                        Agent Email: {details.agents[index].email}
+                                        <br />
+                                        Location: Sector - {details.agents[index].sector}
+                                        <br />
+                                    </p>
+                                    <br/>
                                     <MyStyledParagraph>Restaurant Details </MyStyledParagraph>
                                     <br></br>
                                     <br></br>
@@ -214,22 +242,11 @@ const Orders = ({
                                         }}
                                         className="group"
                                     >
-                                        Restaurant Name: {events[index].title}
+                                        Restaurant Name: {details.events[index].title}
                                         <br />
-                                        Restaurant Location: Sector - {events[index].sector}
+                                        Restaurant Location: Sector-: {details.events[index].sector}
                                         <br />
                                     </p>
-                                    {order.status == "Pending" ? <p align="right">
-                                        <NewPrimaryButton
-                                            as="a"
-                                            ref={inputRef}
-                                            onClick={() => editOrder(order)}
-                                        >
-                                            {(primaryButtonText = "Update Delivery Status")}
-                                        </NewPrimaryButton>
-
-                                    </p> : null}
-
                                 </Answer>
                             </FAQ>
                         ))}
@@ -243,4 +260,4 @@ const Orders = ({
     );
 };
 
-export default Orders; 
+export default AddOrders;

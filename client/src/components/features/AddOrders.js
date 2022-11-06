@@ -282,7 +282,7 @@ const AddOrders = ({
                   className="group"
                 >
                   <img src={Logopdf} alt="logo" css={logocss} />
-                  <QuestionText>Ordered Dish Name: {order.dname}</QuestionText>
+                  <QuestionText>Status: {order.status}&nbsp; &nbsp; &nbsp;Ordered Dish: {order.dname}</QuestionText>
                   <QuestionToggleIcon
                     variants={{
                       collapsed: { rotate: 0 },
