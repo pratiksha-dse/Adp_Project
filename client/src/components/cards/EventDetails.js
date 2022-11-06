@@ -245,21 +245,8 @@ export default () => {
               <Rating>{event.rating}</Rating>
                     </RatingsInfo> */}
                   </TitleReviewContainer>
-                 
-                  <SecondaryInfoContainer>
-                    <IconWithText>
-                      <IconContainer>
-                        <DateIcon />
-                      </IconContainer>
-                      <Text>{event.date}</Text>
-                    </IconWithText>
-                    <IconWithText>
-                      <IconContainer>
-                        <TimeIcon />
-                      </IconContainer>
-                      <Text>{event.time}</Text>
-                    </IconWithText>
-                  </SecondaryInfoContainer>
+                  
+                
                   <SecondaryInfoContainer>
                   <IconWithText>
                       <IconContainer>
@@ -271,7 +258,7 @@ export default () => {
                       <IconContainer>
                         <DateIcon />
                       </IconContainer>
-                      <Text>{event.status}</Text>
+                      <Text>{event.email}</Text>
                     </IconWithText>
               
                
@@ -282,7 +269,7 @@ export default () => {
                       <IconContainer>
                         <TimeIcon />
                       </IconContainer>
-                      <Text>{event.email}</Text>
+                      <Text>Location: Sector-{event.sector}</Text>
                     </IconWithText>
              </SecondaryInfoContainer>
                   {/* <Description>{event.description}</Description> */}

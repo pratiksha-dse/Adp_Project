@@ -11,9 +11,9 @@ const OrderSchema = new mongoose.Schema({
         min : 0
     },
    location :{
-        type : String,
+        type : Number,
         required : true,
-        min : 1
+        min : 0
     },
     name :{
         type : String,
@@ -29,7 +29,18 @@ const OrderSchema = new mongoose.Schema({
         type:String,
         required:true,
         min:1
+    },
+    AID:{
+        type:String,
+        required:true,
+        min:1
+    },
+    status:{
+        type:String,
+        required:true,
+        min:1
     }
+    
 });
 
 module.exports = mongoose.model('Order', OrderSchema);

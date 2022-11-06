@@ -9,8 +9,7 @@ import { HashRouter as Router, Switch, Route } from "react-router-dom";
 
 import EventView from "demos/EventView";
 import Event from "demos/Event";
-import AdminEvent from "demos/AdminEvent";
-import EventEdit from "demos/EventEdit";
+import Order from "demos/Order";
 import AddEvent from "demos/AddEvent";
 // import YourEvents from "demos/YourEvents";
 
@@ -25,10 +24,8 @@ export default function App() {
         <UserRoute exact path="/restaurants" component={Event} />
         <UserRoute path="/place_order" component={EventView} />
         <UserRoute path="/addincidents" component={AddEvent} />
-        {/* <UserRoute path="/your_incidents" component={YourEvents} /> */}
 
-        <AdminRoute exact path="/admin_incidents" component={AdminEvent} />
-        <AdminRoute path="/admin_incident" component={EventView} />
+        <AdminRoute  path="/orders" component={Order} />
         <Route path="/">
           <Home />
         </Route>

@@ -77,7 +77,7 @@ const EventEdit = ({
     account:"",
     contact:"",
     email:"",
-    status:"pending"
+    status:"Pending"
  
   });
   const [message, setMessage] = useState(eventOld);
@@ -103,7 +103,7 @@ const EventEdit = ({
       contact:"",
       account:"",
       email:"",
-      status:"pending",
+      status:"Pending",
     
     });
   };
@@ -130,7 +130,6 @@ const EventEdit = ({
       resetForm();
       if (!message.msgError) {
         timerID = setTimeout(() => {
-          //   props.history.push("/#/add");
         }, 2000);
       }
     });

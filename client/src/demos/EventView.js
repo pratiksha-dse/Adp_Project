@@ -53,7 +53,7 @@ export default (props) => {
             <EventDedicated event={event} />
           </div>
           <div id="place_order">
-            <AddOrders SEID={eventID} />
+            <AddOrders SEID={eventID}/>
           </div>
         </AnimationRevealPage>
         <Footer />

@@ -5,19 +5,16 @@ const Event = require("../models/Event");
 
 eventRouter.post("/addevent", (req, res) => {
   console.log("doing2");
-  const { title, img, date, time,  description,contact,email,account } = req.body;
+  const { title, img,   description,sector,contact,email } = req.body;
   // const { title,  date,time,reglink,description} = req.body;
 
   const newEvent = new Event({
     title:title,
     img:img,
-    date:date,
-    time:time,
     description:description,
+    sector:sector,
     contact:contact,
     email:email,
-    account:account,
-    status:"pending"
 
   });
   
@@ -76,18 +73,18 @@ eventRouter.get("/events", (req, res) => {
       console.log("Events fetched successfully");
       res.status(200).json({ events: document });
     }
-  });
+  }); 
 });
 eventRouter.post("/geteventbyid", (req, res) => {
   console.log("Fetching Event");
   Event.findById(req.body._id).exec((err, document) => {
     if (err) {
-      console.log("Events failed to fetch");
+      console.log("Event failed to fetch");
       res.status(500).json({
-        message: { msgBody: "Events failed to fetch", msgError: true },
+        message: { msgBody: "Event failed to fetch", msgError: true },
       });
     } else {
-      console.log("Events fetched successfully");
+      console.log("Event fetched successfully");
       res.status(200).json({ event: document });
     }
   });

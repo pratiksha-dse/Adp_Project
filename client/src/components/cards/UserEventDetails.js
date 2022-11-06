@@ -275,9 +275,9 @@ export default () => {
               return <></>;
             }
            })}
-     
+      
         </TabContent>
-      </Content>
+      </Content> 
     </Container>
   );
 };

@@ -2,6 +2,7 @@ import React, { useContext, useState, useRef, useEffect } from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 import AuthService from "../../Services/AuthService";
+import AgentService from "../../Services/AgentService";
 import { AuthContext } from "../../Context/AuthContext";
 import { GoogleLogin } from "react-google-login";
 import UserService from "../../Services/UserService";
@@ -53,14 +54,6 @@ const Navbar = (props) => {
       }
     });
   };
-  const onClickLoginHandler = () => {
-    AuthService.logout().then((data) => {
-      if (data.success) {
-        setUser(data.user);
-        setIsAuthenticated(false);
-      }
-    });
-  };
 
 
   const unauthenticatedNavBar = () => {
@@ -76,9 +69,9 @@ const Navbar = (props) => {
   const authenticatedNavBar = () => {
     return (
       <>  <NavLink href="#about">Home</NavLink>
-      <NavLink href="#restaurants">Restaurants</NavLink>
-      <NavLink href="#addincidents">Add Incident</NavLink>
-      <NavLink href="#letstalk">Contact Us</NavLink>
+        <NavLink href="#restaurants">Restaurants</NavLink>
+        <NavLink href="#addincidents">Add Incident</NavLink>
+        <NavLink href="#letstalk">Contact Us</NavLink>
       </>
     );
   };
@@ -86,7 +79,7 @@ const Navbar = (props) => {
     return (
       <>
         <NavLink href="#about">Home</NavLink>
-        <NavLink href="#admin_incidents">Incidents</NavLink> 
+        <NavLink href="#orders">Orders</NavLink>
       </>
     );
   };
@@ -118,33 +111,44 @@ const Navbar = (props) => {
   const handleLogin = (result) => {
     AuthService.login({ token: result.tokenId }).then((data) => {
       console.log(data);
-      const { isAuthenticated, user, message, isAdmin } = data;
+      const { isAuthenticated, user, message} = data;
       if (isAuthenticated) {
-        authContext.setUser(user);
-        setUserdetail({name:user.name,email:user.email})
-        console.log("debug")
-        console.log(user);
-        authContext.setIsAuthenticated(isAuthenticated);
-        authContext.setIsAdmin(isAdmin);
+        AgentService.getAgents().then((data1) => {
+          let check=false;
+          for (const agent of data1.agents) {
+            authContext.setUser(user);
+            setUserdetail({ name: user.name, email: user.email })
+            authContext.setIsAuthenticated(isAuthenticated);
+            if (agent.email == data.user.email && !check) {
+              setUser(agent);
+              authContext.setIsAdmin(true);
+              check=true;break;
+            }
+          }
+          if(!check){
+            authContext.setIsAdmin(false);
+          }
+        });
+
         console.log(Userdetail)
 
-        UserService.getUserByemail(user.email).then((data)=>{
-            console.log(data);
-            if(data.user==null){
-              UserService.addUser({name:user.name,email:user.email}).then((data) => {
-                const { msg } = data;
-                setMsg(msg);
-              });
-            }
-            else{
-              console.log("user already exist")
-            }
+        UserService.getUserByemail(user.email).then((data) => {
+          console.log(data);
+          if (data.user == null) {
+            UserService.addUser({ name: user.name, email: user.email }).then((data) => {
+              const { msg } = data;
+              setMsg(msg);
+            });
+          }
+          else {
+            console.log("user already exist")
+          }
         });
         // UserService.addUser({name:user.name,email:user.email}).then((data) => {
         //   const { msg } = data;
         //   setMsg(msg);
         // });
-   
+
         //props.history.push('/todos');
       } else {
         alert(message.msgBody);
@@ -155,7 +159,7 @@ const Navbar = (props) => {
   const navLinks = [
     <NavLinks key={1}> {navlinks()}</NavLinks>,
     <NavLinks key={2}>
-      
+
       {isAuthenticated ? (
         <button>
           <PrimaryLink onClick={onClickLogoutHandler} href="/#">

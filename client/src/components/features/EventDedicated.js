@@ -64,8 +64,6 @@ export default ({
   textOnLeft = false,
   event = {},
 }) => {
-  // The textOnLeft boolean prop can be used to display either the text on left or right side of the image.
-  //Change the statistics variable as you like, add or delete objects
   const defaultStatistics = [
     {
       key: "Date",
@@ -93,34 +91,20 @@ export default ({
     : imageSrc;
 
 
-  const datE = (event ? event.date : null)
-    ? event
-      ? event.date
-      : null
-    : null;
-  const timE = (event ? event.time : null)
-    ? event
-      ? event.time
-      : null
-    : null;
+
   const contacT = (event ? event.contact : null)
     ? event
       ? event.contact
-      : null
+      : null  
     : null;
-  const statuS = (event ? event.status : null)
+  const sectoR = (event ? event.sector : null)
     ? event
-      ? event.status
+      ? event.sector
       : null
     : null;
   const emaiL = (event ? event.email : null)
     ? event
       ? event.email
-      : null
-    : null;
-  const accounT = (event ? event.account : null)
-    ? event
-      ? event.account
       : null
     : null;
 
@@ -156,14 +140,7 @@ export default ({
                   : null
                 : description}
             </Description>
-            <Statistics>
-              <Statistic key={1}>
-                <Key>Date: {datE}</Key>
-              </Statistic>
-              <Statistic key={2}>
-                <Key>Time: {timE}</Key>
-              </Statistic>
-            </Statistics>
+           
             <Statistics>
 
               <Statistic key={1}>
@@ -181,16 +158,10 @@ export default ({
             </Statistics>
             <Statistics>
               <Statistic key={1}>
-                <Key>Account Address: {accounT}</Key>
+                <Key>Location: Sector- {sectoR}</Key>
               </Statistic>
             </Statistics>
-            <Statistics>
-              <Statistic key={1}>
-                <Key><PrimaryButton as="a" href={"www.google.com"} target="_blank">
-                  {statuS}
-                </PrimaryButton></Key>
-              </Statistic>
-            </Statistics>
+            
           </TextContent>
         </TextColumn>
       </TwoColumn>

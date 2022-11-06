@@ -1,20 +1,17 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
 import Hero from "components/hero/BackgroundAsImageWithCenteredContent.js";
 
-import EventDetails from "components/cards/EventDetails.js";
+import Orders from "components/features/Orders.js";
+
+
 import tw from "twin.macro";
-import MainFeature1 from "components/features/TwoColWithButton.js";
-// import Features from "components/features/VerticalWithAlternateImageAndText.js";
-// import Blog from "components/blogs/ThreeColSimpleWithImage.js";
-// import Testimonial from "components/testimonials/TwoColumnWithImage.js";
-// import ContactUsForm from "components/forms/SimpleContactUs.js";
+
 import Footer from "components/footers/MiniCenteredFooter.js";
 import { AuthContext } from "../Context/AuthContext";
-
 const Subheading = tw.span`uppercase tracking-wider text-sm`;
 
-export default () => {
+export default (props) => {
   const {
     user,
     setUser,
@@ -22,20 +19,22 @@ export default () => {
     setIsAuthenticated,
     isAdmin,
     setIsAdmin,
-  } = useContext(AuthContext);
+  } = useContext(AuthContext);  
 
+  const agentID = props.location.search.slice(1);
+console.log(agentID)
+
+  // console.log(props.location.search.slice(1));
+  // console.log(event);
   const adminLP = () => {
     return (
       <>
         <AnimationRevealPage>
           <Hero getstarted="#bookaslot" />
-          <div id="admin_incidents">
-            <EventDetails />
-          </div>
-          {/* <div id="addevents">
-            <AddEvents />
-          </div> */}
          
+          <div id="orders">
+            <Orders AID={agentID}/>
+          </div>
         </AnimationRevealPage>
         <Footer />
       </>

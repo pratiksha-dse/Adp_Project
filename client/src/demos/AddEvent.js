@@ -12,7 +12,7 @@ import tw from "twin.macro";
 // import ContactUsForm from "components/forms/SimpleContactUs.js";
 import Footer from "components/footers/MiniCenteredFooter.js";
 import { AuthContext } from "../Context/AuthContext";
-
+ 
 const Subheading = tw.span`uppercase tracking-wider text-sm`;
 
 export default () => {

@@ -1,19 +1,28 @@
 import React, { createContext, useState, useEffect, useRef } from 'react';
 import AuthService from '../Services/AuthService';
+import AgentService from '../Services/AgentService';
 export const AuthContext = createContext();
 
 export default ({ children }) => {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(null); 
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const [isLoaded, setIsLoaded] = useState(true);
 
     useEffect(() => {
         AuthService.isAuthenticated().then(data => {
-            setUser(data.user);
+            // setUser(data.user);
             setIsAuthenticated(data.isAuthenticated);
             setIsLoaded(true);
-            setIsAdmin(data.user.email=="childfly01@gmail.com")
+            AgentService.getAgents().then((data1) => {
+              for (const agent of data1.agents){
+                if(agent.email==data.user.email){
+                    setUser(agent)
+                    setIsAdmin(true);
+                    break;
+                }
+              }
+            });
         });
     }, []);
 

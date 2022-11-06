@@ -18,7 +18,8 @@ app.use('/user',userRouter);
 
 const orderRouter = require('./routes/Order');
 app.use('/order',orderRouter);
-
+const agentRouter = require('./routes/Agent');
+app.use('/agent',agentRouter);
 const eventRouter = require('./routes/Event');
 app.use('/event',eventRouter);
 const contactRouter = require('./routes/Contact');

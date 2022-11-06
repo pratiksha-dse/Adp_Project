@@ -11,6 +11,8 @@ import {
 import { SectionDescription } from "components/misc/Typography.js";
 import { Container, ContentWithPaddingXl } from "components/misc/Layouts.js";
 import OrderService from "../../Services/OrderService";
+import AgentService from "../../Services/AgentService";
+import EventService from "../../Services/EventService";
 import { ReactComponent as SignUpIcon } from "feather-icons/dist/icons/log-in.svg";
 import { ReactComponent as ChevronDownIcon } from "feather-icons/dist/icons/chevron-down.svg";
 import { ReactComponent as SvgDecoratorBlob1 } from "images/svg-decorator-blob-7.svg";
@@ -57,7 +59,7 @@ const QuestionToggleIcon = motion(styled.span`
   }
 `);
 const Answer = motion(tw.dd`text-sm sm:text-base leading-relaxed`);
-
+const MyStyledParagraph = tw.span`mx-6 text-lg lg:text-lg font-semibold`;
 const DecoratorBlob1 = styled(SvgDecoratorBlob1)`
   ${tw`pointer-events-none -z-20 absolute right-0 top-0 h-56 w-56 opacity-15 transform translate-x-2/3 -translate-y-12 text-teal-400`}
 `;
@@ -69,7 +71,6 @@ const AddOrders = ({
   subheading = "CapiBull",
   heading = "Orders ",
   description = "Here are some orders.",
-
   primaryButtonText = "Learn More",
   primaryButtonUrl = "https://timerse.com",
   SEID = "",
@@ -86,9 +87,11 @@ const AddOrders = ({
     dname: "",
     quantity: "",
     location: "",
-    name:"",
-    no:"",
+    name: "",
+    no: "",
     SEID: SEID,
+    AID: "",
+    status: "Pending",
   });
   const [message, setMessage] = useState(null);
   let timerID = useRef(null);
@@ -106,37 +109,73 @@ const AddOrders = ({
   const resetForm = () => {
     setOrder({
       dname: "",
-    quantity: "",
-    location: "",
-    name:"",
-    no:"",
-    SEID: "",
+      quantity: "",
+      location: "",
+      name: "",
+      no: "",
+      SEID: "",
+      AID: "",
+      status: "",
     });
   };
 
+  const [details, setDetails] = useState({
+    orders: [],
+    agents: [],
+    // agent: null
+  });
+  const [agent, setAgent] = useState(null);
   const onSubmit = (e) => {
     e.preventDefault();
-    const tmpOrders = [...orders, order];
-    OrderService.postOrder(order).then((data) => {
-      const { message } = data;
-      setMessage(message);
-      resetForm();
-      if (!message.msgError) {
-        timerID = setTimeout(() => {
-          //   props.history.push("/#/add");
-        }, 2000);
-      }
+    AgentService.getAgents().then((data1) => {
+      EventService.getEventByID(SEID).then((data2) => {
+        let event = data2.event;
+        let agent1;
+        let mn = Number.MAX_VALUE;
+        for (const a of data1.agents) {
+          if (a.status == "free") {
+            if (Math.abs(a.sector - event.sector) < mn) {
+              mn = Math.abs(a.sector - event.sector);
+              agent1 = a
+            }
+          }
+        }
+        let order1 = order;
+        order1.AID = agent1._id;
+        OrderService.postOrder(order1).then((data3) => {
+          let newAgent = agent1;
+          newAgent.status = "busy";
+          AgentService.editAgent(newAgent, agent1._id).then((data4) => {
+            const { message } = data4;
+            setMessage(message);
+            if (!message.msgError) {
+              timerID = setTimeout(() => {
+              }, 2000);
+            }
+          });
+        });
+      });
     });
-    setOrders(tmpOrders);
   };
   const inputRef = useRef();
   useEffect(() => {
     OrderService.getOrders(SEID).then((data) => {
-      setOrders(data.orders);
-      console.log(orders);
+      let ags = [];
+      let ords = [];
+      for (const ord of data.orders) {
+        AgentService.getAgentByID(ord.AID).then((data1) => {
+          ords.push(ord);
+          ags.push(data1.agent);
+          console.log("ags",ags)
+          console.log("ords", ords)
+          setDetails({ orders: [...details.orders, ...ords], agents: [...details.agents, ...ags] })
+        });
+      }
     });
+
   }, [inputRef]);
 
+  console.log("details", details.agents, details.orders)
   function removeItemOnce(arr, value) {
     var index = arr.indexOf(value);
     if (index > -1) {
@@ -145,12 +184,11 @@ const AddOrders = ({
     return arr;
   }
   const deleteOrder = (order) => {
-    const tmpOrders = [...orders];
+    const tmpOrders = [...details.orders];
     OrderService.delOrder(order).then((data) => {
       const { message } = data;
       setMessage(message);
     });
-    setOrders(removeItemOnce(tmpOrders, order));
   };
   const [activeQuestionIndex, setActiveQuestionIndex] = useState(null);
 
@@ -158,59 +196,59 @@ const AddOrders = ({
     if (activeQuestionIndex === questionIndex) setActiveQuestionIndex(null);
     else setActiveQuestionIndex(questionIndex);
   };
-  const [orders, setOrders] = useState([]);
+
   return (
     // <AnimationRevealPage>
     <Container tw="m-8">
       <ContentWithPaddingXl>
         <Column>
-            <>
-              <HeaderContent>
-                {/* <Subheading>CapiBull</Subheading> */}
-                <Heading>Submit order Details</Heading>
-                <p align="center">
-                  <Description>
-                    Add dish name, quantity, delivery location, contact name and contact no.
-                  </Description>
-                </p>
-              </HeaderContent>
-              <br /> 
-              <br />
-              <br />
-              <Form onSubmit={onSubmit}>
-                <Input
-                  type="text"
-                  name="dname"
-                  value={order.dname}
-                  onChange={onChange}
-                  placeholder="Dish Name"
-                  required
-                />
-                <Input
-                  type="number"
-                  name="quantity"
-                  value={order.quantity}
-                  onChange={onChange}
-                  placeholder="Quantity"
-                  required
-                />
-                <Input
-                  type="text"
-                  name="location"
-                  value={order.location}
-                  onChange={onChange}
-                  placeholder="Delivery Location"
-                  required
-                />
-                 <Input
-                  type="text"
-                  name="name"
-                  value={order.name}
-                  onChange={onChange}
-                  placeholder="Contact Name"
-                  required
-                /> 
-                <Input
+          <>
+            <HeaderContent>
+              {/* <Subheading>CapiBull</Subheading> */}
+              <Heading>Submit order Details</Heading>
+              <p align="center">
+                <Description>
+                  Add dish name, quantity, delivery location, contact name and contact no.
+                </Description>
+              </p>
+            </HeaderContent>
+            <br />
+            <br />
+            <br />
+            <Form onSubmit={onSubmit}>
+              <Input
+                type="text"
+                name="dname"
+                value={order.dname}
+                onChange={onChange}
+                placeholder="Dish Name"
+                required
+              />
+              <Input
+                type="number"
+                name="quantity"
+                value={order.quantity}
+                onChange={onChange}
+                placeholder="Quantity"
+                required
+              />
+              <Input
+                type="number"
+                name="location"
+                value={order.location}
+                onChange={onChange}
+                placeholder="Delivery Location: Sector"
+                required
+              />
+              <Input
+                type="text"
+                name="name"
+                value={order.name}
+                onChange={onChange}
+                placeholder="Contact Name"
+                required
+              />
+              <Input
                 type="tel"
                 name="no"
                 value={order.no}
@@ -219,22 +257,22 @@ const AddOrders = ({
                 required
               />
 
-                <p align="right">
-                  <SubmitButton type="submit">
-                    <SignUpIcon className="icon" />
-                    <span className="text">Submit</span>
-                  </SubmitButton>
-                </p>
-              </Form>
-            </>
-            <HeaderContent>
-              <br></br> 
-              <br></br>  
-                <Heading>Orders - Details</Heading>
-              
-              </HeaderContent>
+              <p align="right">
+                <SubmitButton type="submit">
+                  <SignUpIcon className="icon" />
+                  <span className="text">Submit</span>
+                </SubmitButton>
+              </p>
+            </Form>
+          </>
+          <HeaderContent>
+            <br></br>
+            <br></br>
+            <Heading>Orders - Details</Heading>
+
+          </HeaderContent>
           <FAQSContainer>
-            {orders.map((order, index) => (
+            {details.orders.map((order, index) => (
               <FAQ>
                 <Question
                   key={index}
@@ -244,7 +282,7 @@ const AddOrders = ({
                   className="group"
                 >
                   <img src={Logopdf} alt="logo" css={logocss} />
-                  <QuestionText>{order.location}</QuestionText>
+                  <QuestionText>Ordered Dish Name: {order.dname}</QuestionText>
                   <QuestionToggleIcon
                     variants={{
                       collapsed: { rotate: 0 },
@@ -281,24 +319,43 @@ const AddOrders = ({
                     }}
                     className="group"
                   >
-                   Contact Name: {order.name}
+                    Contact Name: {order.name}
                     <br />
-                   Contact Number: {order.no}
+                    Contact Number: {order.no}
                     <br />
-                   Dish Name: {order.dname}
-                    <br/>
-                   Quantity of dish: {order.quantity}
+                    Quantity of dish: {order.quantity}
+                    <br />
+                    Location: Sector- {order.location}
                   </p>
-                  <p align="right">
-                      <NewPrimaryButton
-                        as="a"
-                        ref={inputRef}
-                        onClick={() => deleteOrder(order)}
-                      >
-                        {(primaryButtonText = "Delete")}
-                      </NewPrimaryButton>
-                      
+                  <br></br>
+                  <MyStyledParagraph>Assigned Delivery Agent Details </MyStyledParagraph>
+                  <br></br>
+                  <br></br>
+                  <p
+                    key={index}
+                    onClick={() => {
+                      toggleQuestion(index);
+                    }}
+                    className="group"
+                  >
+                    Agent Name: {details.agents[index].name}
+                    <br />
+                    Agent Email: {details.agents[index].email}
+                    <br />
+                    Location: Sector - {details.agents[index].sector}
+                    <br />
                   </p>
+
+                  {/* <p align="right">
+                    <NewPrimaryButton
+                      as="a"
+                      ref={inputRef}
+                      onClick={() => deleteOrder(order)}
+                    >
+                      {(primaryButtonText = "Delete")}
+                    </NewPrimaryButton>
+
+                  </p> */}
                 </Answer>
               </FAQ>
             ))}
