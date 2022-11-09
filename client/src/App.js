@@ -25,8 +25,7 @@ export default function App() {
         <UserRoute exact path="/restaurants" component={Event} />
         <UserRoute exact path="/all_orders" component={AllOrders} />
         <UserRoute path="/place_order" component={EventView} />
-        {/* <UserRoute path="/addincidents" component={AddEvent} /> */}
-
+        
         <AdminRoute  path="/orders" component={Order} />
         <Route path="/">
           <Home />

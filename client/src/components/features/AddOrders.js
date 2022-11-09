@@ -325,7 +325,7 @@ const AddOrders = ({
                     <br />
                     Quantity of dish: {order.quantity}
                     <br />
-                    Location: Sector- {order.location}
+                    Delivery Location: Sector- {order.location}
                   </p>
                   <br></br>
                   <MyStyledParagraph>Assigned Delivery Agent Details </MyStyledParagraph>

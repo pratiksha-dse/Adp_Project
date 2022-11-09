@@ -102,23 +102,14 @@ const Orders = ({
         let newOrder = order;
         newOrder.status = "Delivered";
         OrderService.editOrder(newOrder, order._id).then((data) => {
-            const { message } = data;
-            let newAgent = user;
-            newAgent.status = "free";
-            newAgent.sector = order.location;
-            console.log("newAgent", newAgent);
-            AgentService.editAgent(newAgent, user._id).then((data1) => {
-                const { message1 } = data1;
-                if (!message1.msgError) {
-                    setTimeout(() => {
-                    }, 2000);
-                }
-                console.log("agent updated successfully")
-            });
-            if (!message.msgError) {
-                setTimeout(() => {
-                }, 2000);
-            }
+            console.log("order updated successfully")
+        });
+        let newAgent = user;
+        newAgent.status = "free";
+        newAgent.sector = order.location;
+        console.log("newAgent", newAgent);
+        AgentService.editAgent(newAgent, user._id).then((data1) => {
+            console.log("agent updated successfully")
         });
     }
 

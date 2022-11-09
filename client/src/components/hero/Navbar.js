@@ -71,7 +71,6 @@ const Navbar = (props) => {
       <>  <NavLink href="#about">Home</NavLink>
         <NavLink href="#restaurants">Restaurants</NavLink>
         <NavLink href="#all_orders">All Orders</NavLink>
-        {/* <NavLink href="#addincidents">Add Incident</NavLink> */}
         <NavLink href="#letstalk">Contact Us</NavLink>
       </>
     );
