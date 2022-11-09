@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from "react";
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
 import Hero from "components/hero/BackgroundAsImageWithCenteredContent.js";
 
-import AddEvents from "components/features/AddEvents.js";
 import EventDetails from "components/cards/EventDetails.js";
 
 import tw from "twin.macro";
@@ -27,21 +26,6 @@ export default () => {
   // console.log(isAdmin, user)
 
   const userLP = () => {
-    if (isAdmin) {
-      return (
-        <>
-          <AnimationRevealPage>
-            <Hero getstarted="#bookaslot" />
-            <div id="admin_incidents">
-              <EventDetails />
-            </div>
-
-          </AnimationRevealPage>
-          <Footer />
-        </>
-      );
-    }
-    else {
       return (
         <>
           <AnimationRevealPage>
@@ -54,7 +38,6 @@ export default () => {
           <Footer />
         </>
       );
-  }
 };
 const page = () => {
   if (isAuthenticated && !isAdmin) return userLP();

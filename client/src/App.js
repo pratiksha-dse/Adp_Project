@@ -10,7 +10,6 @@ import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import EventView from "demos/EventView";
 import Event from "demos/Event";
 import Order from "demos/Order";
-import AddEvent from "demos/AddEvent";
 import AllOrders from "demos/AllOrders";
 // import YourEvents from "demos/YourEvents";
 
