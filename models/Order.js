@@ -39,6 +39,11 @@ const OrderSchema = new mongoose.Schema({
         type:String,
         required:true,
         min:1
+    },
+    email:{
+        type:String,
+        required:true,
+        min:1,
     }
     
 });

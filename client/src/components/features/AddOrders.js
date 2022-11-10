@@ -92,6 +92,7 @@ const AddOrders = ({
     SEID: SEID,
     AID: "",
     status: "Pending",
+    email:user.email,
   });
   const [message, setMessage] = useState(null);
   let timerID = useRef(null);
@@ -116,6 +117,7 @@ const AddOrders = ({
       SEID: "",
       AID: "",
       status: "",
+      email:"",
     });
   };
 
@@ -127,6 +129,7 @@ const AddOrders = ({
   const [agent, setAgent] = useState(null);
   const onSubmit = (e) => {
     e.preventDefault();
+    console.log("user1",user);
     AgentService.getAgents().then((data1) => {
       EventService.getEventByID(SEID).then((data2) => {
         let event = data2.event;
@@ -142,9 +145,12 @@ const AddOrders = ({
         }
         let order1 = order;
         order1.AID = agent1._id;
+        // console.log("user",user);
+        // order1.email=user.email;
         OrderService.postOrder(order1).then((data3) => {
           let newAgent = agent1;
           newAgent.status = "busy";
+          console.log("user email",order1.email)
           AgentService.editAgent(newAgent, agent1._id).then((data4) => {
             const { message } = data4;
             setMessage(message);
@@ -163,18 +169,20 @@ const AddOrders = ({
       let ags = [];
       let ords = [];
       for (const ord of data.orders) {
-        AgentService.getAgentByID(ord.AID).then((data1) => {
-          ords.push(ord);
-          ags.push(data1.agent);
-          console.log("ags",ags)
-          console.log("ords", ords)
-          setDetails({ orders: [...details.orders, ...ords], agents: [...details.agents, ...ags] })
-        });
+        if (ord.email == user.email) {
+          AgentService.getAgentByID(ord.AID).then((data1) => {
+            ords.push(ord);
+            ags.push(data1.agent);
+            console.log("ags", ags)
+            console.log("ords", ords)
+            setDetails({ orders: [...details.orders, ...ords], agents: [...details.agents, ...ags] })
+          });
+        }
       }
     });
 
   }, [inputRef]);
-
+  // console.log(user,isAuthenticated,isAdmin)
   console.log("details", details.agents, details.orders)
   function removeItemOnce(arr, value) {
     var index = arr.indexOf(value);
@@ -322,6 +330,8 @@ const AddOrders = ({
                     Contact Name: {order.name}
                     <br />
                     Contact Number: {order.no}
+                    <br/>
+                    Contact Email: {order.email}
                     <br />
                     Quantity of dish: {order.quantity}
                     <br />

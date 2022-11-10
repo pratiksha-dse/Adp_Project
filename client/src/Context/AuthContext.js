@@ -4,7 +4,7 @@ import AgentService from '../Services/AgentService';
 export const AuthContext = createContext();
 
 export default ({ children }) => {
-    const [user, setUser] = useState(null); 
+    const [user, setUser] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const [isLoaded, setIsLoaded] = useState(true);
@@ -15,13 +15,18 @@ export default ({ children }) => {
             setIsAuthenticated(data.isAuthenticated);
             setIsLoaded(true);
             AgentService.getAgents().then((data1) => {
-              for (const agent of data1.agents){
-                if(agent.email==data.user.email){
-                    setUser(agent)
-                    setIsAdmin(true);
-                    break;
+                let check = false;
+                for (const agent of data1.agents) {
+                    if (agent.email == data.user.email) {
+                        setUser(agent)
+                        setIsAdmin(true);
+                        check = true;
+                        break;
+                    }
                 }
-              }
+                if (!check) {
+                    setUser(data.user);
+                }
             });
         });
     }, []);

@@ -107,23 +107,25 @@ const AddOrders = ({
             let ords = [];
             let events = [];
             for (const ord of data.orders) {
-                AgentService.getAgentByID(ord.AID).then((data1) => {
-                    EventService.getEventByID(ord.SEID).then((data2) => {
-                        ords.push(ord);
-                        ags.push(data1.agent);
-                        events.push(data2.event);
-                        console.log("ags", ags)
-                        console.log("ords", ords)
-                        console.log("events", events)
-                        setDetails({ orders: [...details.orders, ...ords], agents: [...details.agents, ...ags], events: [...details.events, ...events] })
+                if (ord.email == user.email) {
+                    AgentService.getAgentByID(ord.AID).then((data1) => {
+                        EventService.getEventByID(ord.SEID).then((data2) => {
+                            ords.push(ord);
+                            ags.push(data1.agent);
+                            events.push(data2.event);
+                            console.log("ags", ags)
+                            console.log("ords", ords)
+                            console.log("events", events)
+                            setDetails({ orders: [...details.orders, ...ords], agents: [...details.agents, ...ags], events: [...details.events, ...events] })
+                        });
                     });
-                });
+                }
             }
         });
 
     }, [inputRef]);
 
-    console.log("details", details.agents, details.orders,details.events);
+    console.log("details", details.agents, details.orders, details.events);
     function removeItemOnce(arr, value) {
         var index = arr.indexOf(value);
         if (index > -1) {
@@ -209,9 +211,11 @@ const AddOrders = ({
                                         <br />
                                         Contact Number: {order.no}
                                         <br />
+                                        Contact Email: {order.email}
+                                        <br />
                                         Quantity of dish: {order.quantity}
                                         <br />
-                                       Delivery Location: Sector- {order.location}
+                                        Delivery Location: Sector- {order.location}
                                     </p>
                                     <br></br>
                                     <MyStyledParagraph>Assigned Delivery Agent Details </MyStyledParagraph>
@@ -231,7 +235,7 @@ const AddOrders = ({
                                         Location: Sector - {details.agents[index].sector}
                                         <br />
                                     </p>
-                                    <br/>
+                                    <br />
                                     <MyStyledParagraph>Restaurant Details </MyStyledParagraph>
                                     <br></br>
                                     <br></br>

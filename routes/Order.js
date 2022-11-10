@@ -5,7 +5,7 @@ const Order = require("../models/Order");
 
 orderRouter.post("/addorder", (req, res) => {
   console.log("hello1");
-  const { dname,quantity,location,name,no,SEID,AID,status } = req.body;
+  const { dname,quantity,location,name,no,SEID,AID,status,email } = req.body;
 
   const newOrder = new Order({
     dname,
@@ -15,7 +15,8 @@ orderRouter.post("/addorder", (req, res) => {
     no,
     SEID,
     AID,
-    status
+    status,
+    email
   });
   newOrder.save((err) => {
     if (err) {
