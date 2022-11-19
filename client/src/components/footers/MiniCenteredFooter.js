@@ -6,7 +6,7 @@ import { AuthContext } from "../../Context/AuthContext";
 import { GoogleLogin } from "react-google-login";
 import UserService from "../../Services/UserService";
 import { Container as ContainerBase } from "components/misc/Layouts.js";
-import logo from "../../images/logo.png";
+import logo from "../../images/fslogo.png";
 import { ReactComponent as FacebookIcon } from "../../images/facebook-icon.svg";
 import { ReactComponent as TwitterIcon } from "../../images/twitter-icon.svg";
 import { ReactComponent as InstagramIcon } from "../../images/instagram-logo.svg";
@@ -55,7 +55,7 @@ export default () => {
       <>
         <Link href="#about">Home</Link>
         <Link href="#restaurants">Restaurants</Link>
-        <Link href="#addincidents">Add Incidents</Link>
+        <Link href="#all_orders">All Orders</Link>
         <Link href="#letstalk">Contact Us</Link>
       </>
     );
@@ -64,7 +64,7 @@ export default () => {
     return (
       <>
         <Link href="/">Home</Link>
-        <Link href="#admin_incidents">Incidents</Link>
+        <Link href="#orders">Orders</Link>
       </>
     );
   };
@@ -106,7 +106,7 @@ export default () => {
             </SocialLink>
           </SocialLinksContainer>
           <CopyrightText>
-            Made by the team of Palak Sharma, Prateeksha Pal and Shashwat Sharma.
+            Made with ❤️
           </CopyrightText>
         </Row>
       </Content>

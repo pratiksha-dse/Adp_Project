@@ -219,7 +219,7 @@ export default () => {
     <Container>
       <Content>
         <HeaderContent>
-          <Subheading>ChildFly</Subheading>
+          <Subheading>FoodSwipe</Subheading>
           <Heading>Restaurants</Heading>
         </HeaderContent>
         {/* {searchBar()} */}
