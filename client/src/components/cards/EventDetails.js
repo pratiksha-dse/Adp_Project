@@ -183,16 +183,16 @@ export default () => {
       
     );
   };
- const searchByStatus = () => {
+ const searchByName = () => {
     return (
       <FormContainer>
         <Form onSubmit={onSubmit}>
           <Input
             type="search"
-            name="searchbystatus"
+            name="searchbyname"
             onChange={onChange2}
             value={query2}
-            placeholder="Search by Status"
+            placeholder="Search by Name"
           />
         </Form>
       </FormContainer>
@@ -222,17 +222,16 @@ export default () => {
           <Subheading>FoodSwipe</Subheading>
           <Heading>Restaurants</Heading>
         </HeaderContent>
-        {/* {searchBar()} */}
-        {searchByPlace()}
-        {searchByStatus()}
-        {searchByEmail()}
+        {/* {searchByPlace()} */}
+        {searchByName()} 
+        {/* {searchByEmail()} */} 
         <TabContent>
           <DecoratorBlob1 />
           <DecoratorBlob2 />
            {events.map((event, index)=> {
             //  console.log("hey", query1,event.title,event.title.match(query1) )
             //  console.log("hello", query3, "hey",event.email,event.title.match(query3) )
-            if ((query1=="" && query2=="" && query3=="")|| (query2!="" && event.status.match(query2)) ||(query1!="" && event.title.match(query1))||(query3!="" && event.email.match(query3) )) {
+            if (( query2=="" )|| (query2!="" && event.title.match(query2))) {
               return (
                 <Card key={index}>
            <CardImage imageSrc={event.img} />
