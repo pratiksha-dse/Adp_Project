@@ -38,7 +38,8 @@ export default (props) => {
     isAdmin,
     setIsAdmin,
   } = useContext(AuthContext);
-  if (!isAuthenticated || (isAdmin)) {
+  console.log("user-test", user)
+  if (!isAuthenticated) {
     return (
       <Container>
         <OpacityOverlay />
@@ -46,14 +47,35 @@ export default (props) => {
           <Navbar />
           <Content>
             <Heading>
-              One stop for managing all the deliveries
+              One stop for placing orders and managing the deliveries
               <br />
             </Heading>
             <Subheading>
-              Are you the foodie?<br/> Order your favourite food from restaurants and have it delivered right to your door.
+              Are you the foodie?<br /> Order your favourite food from restaurants and have it delivered right to your door.
 
-              <br/>Are you the Delivery Agent?
-            <br/>  Connect with all the restaurants. Keep track of all your deliveries and orders without hassle. 
+              <br />Are you the Delivery Agent?
+              <br />  Connect with all the restaurants. Keep track of all your deliveries and orders without hassle.
+
+            </Subheading>
+            <PrimaryAction href="#about">Get Started</PrimaryAction>
+          </Content>
+        </HeroContainer>
+      </Container>
+    );
+  }
+  else if (!isAdmin) {
+    return (
+      <Container>
+        <OpacityOverlay />
+        <HeroContainer>
+          <Navbar />
+          <Content>
+            <Heading>
+              Are you the foodie?
+              <br />
+            </Heading>
+            <Subheading>
+              Order your favourite food from your favourite restaurant and have it delivered right to your door.
 
             </Subheading>
             <PrimaryAction href="#about">Get Started</PrimaryAction>
@@ -70,14 +92,12 @@ export default (props) => {
           <Navbar />
           <Content>
             <Heading>
-              Welcome!
+              Are you the Delivery Agent?
               <br />
             </Heading>
             <Subheading>
-              Report any Child Labour incident and earn ethers after verification of complaint by Inspector.
-              <br />
-              Add all incident details to assist India become powerful.
-              <br />
+
+              Connect with all the restaurants. Keep track of all your deliveries and manage your orders without hassle. You are assigned to the nearest location to pick up the delivery.
 
             </Subheading>
             <PrimaryAction href="#about">Get Started</PrimaryAction>
