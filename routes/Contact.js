@@ -4,12 +4,8 @@ const nodemailer = require("nodemailer");
 const contactEmail = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      // user: "capibulladvisors@gmail.com",
-      // pass: "capibull9550",
       user: "foodswipe897@gmail.com",
       pass: "qfutscxnbltaxrvg",
-      // user: "b20165@students.iitmandi.ac.in",
-      // pass: "123ABC##a", 
     },
   });
   
@@ -35,7 +31,6 @@ contactRouter.post("/contact", (req, res) => {
       to: email,
       subject: `FoodSwipe: Thank you for contacting Us`,
       html: `<p>Name: ${name}</p>
-             <p>Email: ${email}</p>
              <p>Phone: ${phone}</p>
              <p>Subject: ${subject}</p>
              <p>Message: ${message}</p>`,
