@@ -45,16 +45,15 @@ export default (props) => {
         <HeroContainer>
           <Navbar />
           <Content>
-            <Heading>Food swipe<br/>
+            <Heading>
               One stop for managing all the deliveries
               <br />
             </Heading>
             <Subheading>
-              Are you the foodie?<br/> Order your favourite food from your favourite restaurant and have it delivered right to your door.
+              Are you the foodie?<br/> Order your favourite food from restaurants and have it delivered right to your door.
 
               <br/>Are you the Delivery Agent?
-            <br/>  Connect with all the restaurants. Keep track of all your deliveries and manage your orders without hassle. 
-            <br/>You are assigned to the nearest location to pick up the delivery.
+            <br/>  Connect with all the restaurants. Keep track of all your deliveries and orders without hassle. 
 
             </Subheading>
             <PrimaryAction href="#about">Get Started</PrimaryAction>
