@@ -129,6 +129,7 @@ export default ({
       let response = await ContactService.submit(details);
       setStatus("Submit");
       let result = await response.json();
+      console.log(result)
       alert(result.status);
       e.target.elements.email = "";
     }

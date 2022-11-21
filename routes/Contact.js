@@ -6,8 +6,10 @@ const contactEmail = nodemailer.createTransport({
     auth: {
       // user: "capibulladvisors@gmail.com",
       // pass: "capibull9550",
-      user: "b20165@students.iitmandi.ac.in",
-      pass: "123ABC##a",
+      user: "foodswipe897@gmail.com",
+      pass: "qfutscxnbltaxrvg",
+      // user: "b20165@students.iitmandi.ac.in",
+      // pass: "123ABC##a", 
     },
   });
   
@@ -30,11 +32,12 @@ contactRouter.post("/contact", (req, res) => {
     
     const mail = {
       from: name,
-      to: "b20126@students.iitmandi.ac.in",
-      subject: ` ${subject}`,
+      to: email,
+      subject: `FoodSwipe: Thank you for contacting Us`,
       html: `<p>Name: ${name}</p>
              <p>Email: ${email}</p>
              <p>Phone: ${phone}</p>
+             <p>Subject: ${subject}</p>
              <p>Message: ${message}</p>`,
     };
     contactEmail.sendMail(mail, (error) => {

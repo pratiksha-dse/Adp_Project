@@ -66,8 +66,7 @@ export default ({
       Designed & Developed by <span tw="text-primary-500">Professionals.</span>
     </>
   ),
-  // description = "CapiBull is a one-stop pro-bono solution to all your hesitations relating to personal finance. We provide the basic personal financial advisory you need to embark on your financial freedom.",
-  description = "Child labour is indeed a curse to our society and a crime against humanity. Although more prevalent in developing countries, it is definately a universal phenomenon. Thousands of children all over the Western World work in fast food centres, gas stations, newspaper selling, cleaning of cars, in garment and leather factories. They have to grind bricks and stones. ",
+  description = "Food swipe is a centralised Web application that connects restaurants, customers, and delivery agents. Customers can order food from any registered restaurant, and the delivery request is routed to the nearest delivery agent. You can keep track of all of your orders, deliveries, and locations.",
   description2 ="Sometimes we want masters apprehended and imprisoned. But many people wonder what they would get if they report for the same? Will the transactions be completely fair even if the government passes a law rewarding individuals who report child labour?",
   description3= "Don't worry, we have a way for rewarding those who report any actual occurrence of child labour using blockchain. So, Simply report any occurrence involving child labour to earn ether ( A crpytocurrancy ).",
   // primaryButtonText = "Learn More",
