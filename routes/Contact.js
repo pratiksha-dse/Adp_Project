@@ -19,7 +19,7 @@ const contactEmail = nodemailer.createTransport({
 
 
 contactRouter.post("/contact", (req, res) => {
-    console.log("Mail Sent");
+    alert("Mail Sent");
     const name = req.body.name;
     const email = req.body.email;
     const message = req.body.message; 
@@ -43,27 +43,4 @@ contactRouter.post("/contact", (req, res) => {
       }
     });
   });
-
-  contactRouter.post("/confirmslot", (req, res) => {
-    console.log("Mail Sent");
-    const message = req.body.message; 
-    const subject = req.body.subject; 
-    const email = req.body.email; 
-    
-    const mail = {
-      from: "CapiBull Advisors",
-      to: email,
-      subject: ` ${subject}`,
-      html: `<p>${message}</p>`,
-    };
-    contactEmail.sendMail(mail, (error) => {
-      if (error) {
-        res.json({ status: "ERROR" });
-      } else {
-        res.json({ status: "Your mail has been sent successfully" });
-      }
-    });
-  });
-
-
 module.exports = contactRouter; 
